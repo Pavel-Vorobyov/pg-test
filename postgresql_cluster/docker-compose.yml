@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+#  pg_master:
+#    image: pg_master:v0.1
+#    ports:
+#      - "5051:5432"
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_DB: monitoring
+#      PG_REP_USER: rep
+#      PG_REP_PASSWORD: 123456
+#  pg_slave:
+#    image: pg_slave:v0.1
+#    ports:
+#      - "5052:5432"
+#    links:
+#      - pg_master
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: postgres
+#      POSTGRES_DB: monitoring
+#      PG_REP_USER: rep
+#      PG_REP_PASSWORD: 123456
+
+  pg_master:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - '5051:5432'
+    environment:
+      POSTGRESQL_REPLICATION_MODE: master
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres
+      POSTGRESQL_DATABASE: mt
+      POSTGRESQL_REPLICATION_USER: rep
+      POSTGRESQL_REPLICATION_PASSWORD: 123
+    volumes:
+      - /path/to/postgresql-persistence:/bitnami
+  pg_slave:
+    image: 'bitnami/postgresql:latest'
+    ports:
+      - '5052:5432'
+    environment:
+      POSTGRESQL_REPLICATION_MODE: slave
+      POSTGRESQL_MASTER_HOST: pg_master
+      POSTGRESQL_MASTER_PORT_NUMBER: 5432
+      POSTGRESQL_USERNAME: postgres
+      POSTGRESQL_PASSWORD: postgres
+      POSTGRESQL_DATABASE: mt
+      POSTGRESQL_REPLICATION_USER: rep
+      POSTGRESQL_REPLICATION_PASSWORD: 123
+    volumes:
+      - /path/to/postgresql-persistence:/bitnami

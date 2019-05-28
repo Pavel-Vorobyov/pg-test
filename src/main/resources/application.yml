@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5051/monitoring
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        generate_statistics: true
+        order_inserts: true
+        jdbc:
+          batch_size: 500
+monitoring:
+  database:
+    baseUrl: jdbc:postgresql://localhost:5051/monitoring
